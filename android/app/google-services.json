@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "272064639271",
+    "project_id": "mobilefoodadviceapp-58037",
+    "storage_bucket": "mobilefoodadviceapp-58037.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272064639271:android:b7afbf3067830dcf813902",
+        "android_client_info": {
+          "package_name": "com.example.mobilefoodadviceapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS7Usz-QtUZ9hoqCGddSln2nTYZsrNfjc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
