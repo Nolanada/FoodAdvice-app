@@ -17,47 +17,53 @@ class _SupperPageState extends State<SupperPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>?>(
-      future: AdviceServices().getSupperPost(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: postsCollection.where('category', isEqualTo: 'Supper').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else {
-          Map<String, dynamic>? advice = snapshot.data;
+          List<DocumentSnapshot> posts = snapshot.data!.docs;
 
-          if (advice != null) {
-            return Card(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              child: ListTile(
-                contentPadding: EdgeInsets.all(15),
-                title: Text('Advice #${advice['userName'] ?? 'N/A'}',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(advice['content'] ?? 'No content available'),
-                    SizedBox(height: 5),
-                    Row(
+          if (posts.isNotEmpty) {
+            return ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (context, index) {
+                Map<String, dynamic> post = posts[index].data() as Map<String, dynamic>; // Explicitly cast to Map<String, dynamic>
+                return Card(
+                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(15),
+                    title: Text('Advice #${post['userName'] ?? 'N/A'}',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Likes: ${advice['likes'] ?? 0}',
-                            style: TextStyle(color: Colors.grey)),
-                        Spacer(),
-                        IconButton(
-                          icon: Icon(Icons.thumb_up, color: Colors.blue),
-                          onPressed: () {
-                            updateLikes(advice['id'] ?? '', advice['likes'] ?? 0);
-                            setState(() {
-                              // Update the UI to reflect the new likes count
-                            });
-                          },
+                        Text(post['content'] ?? 'No content available'),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Text('Likes: ${post['likes'] ?? 0}',
+                                style: TextStyle(color: Colors.grey)),
+                            Spacer(),
+                            IconButton(
+                              icon: Icon(Icons.thumb_up, color: Colors.blue),
+                              onPressed: () {
+                                updateLikes(post['id'] ?? '', post['likes'] ?? 0);
+                                setState(() {
+                                  // Update the UI to reflect the new likes count
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             );
           } else {
             return Center(child: Text('No Supper advice found.'));

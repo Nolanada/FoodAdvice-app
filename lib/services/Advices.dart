@@ -8,6 +8,7 @@ class AdviceServices {
     await postsCollection.doc(postId).set({
       'id': postId,
       'userName': userName,
+      'type':'Advice',
       'category': category,
       'content': content,
       'timestamp': Timestamp.now(),

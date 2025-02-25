@@ -5,10 +5,12 @@ import 'package:mobilefoodadviceapp/services/Advices.dart';
 class BreakfastPage extends StatefulWidget {
   @override
   _BreakfastPageState createState() => _BreakfastPageState();
+  final AdviceServices AdviceService = AdviceServices();
 }
 
 class _BreakfastPageState extends State<BreakfastPage> {
-  final CollectionReference postsCollection = FirebaseFirestore.instance.collection('posts');
+  final CollectionReference postsCollection = FirebaseFirestore.instance
+      .collection('posts');
 
   Future<void> updateLikes(String postId, int currentLikes) async {
     await postsCollection.doc(postId).update({'likes': currentLikes + 1});
@@ -16,50 +18,59 @@ class _BreakfastPageState extends State<BreakfastPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>?>(
-      future: AdviceServices().getBreakfastPost(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: postsCollection.where('category', isEqualTo: 'Breakfast').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else {
-          Map<String, dynamic>? advice = snapshot.data;
+          List<DocumentSnapshot> posts = snapshot.data!.docs;
 
-          if (advice != null) {
-            return Card(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              child: ListTile(
-                contentPadding: EdgeInsets.all(15),
-                title: Text('Advice #${advice['userName'] ?? 'N/A'}',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(advice['content'] ?? 'No content available'),
-                    SizedBox(height: 5),
-                    Row(
+          if (posts.isNotEmpty) {
+            return ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (context, index) {
+                Map<String, dynamic> post = posts[index].data() as Map<
+                    String,
+                    dynamic>; // Explicitly cast to Map<String, dynamic>
+                return Card(
+                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(15),
+                    title: Text('Advice #${post['userName'] ?? 'N/A'}',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Likes: ${advice['likes'] ?? 0}',
-                            style: TextStyle(color: Colors.grey)),
-                        Spacer(),
-                        IconButton(
-                          icon: Icon(Icons.thumb_up, color: Colors.blue),
-                          onPressed: () {
-                            updateLikes(advice['id'] ?? '', advice['likes'] ?? 0);
-                            setState(() {
-                              // Update the UI to reflect the new likes count
-                            });
-                          },
+                        Text(post['content'] ?? 'No content available'),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Text('Likes: ${post['likes'] ?? 0}',
+                                style: TextStyle(color: Colors.grey)),
+                            Spacer(),
+                            IconButton(
+                              icon: Icon(Icons.thumb_up, color: Colors.blue),
+                              onPressed: () {
+                                updateLikes(
+                                    post['id'] ?? '', post['likes'] ?? 0);
+                                setState(() {
+                                  // Update the UI to reflect the new likes count
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             );
           } else {
-            return Center(child: Text('No breakfast advice found.'));
+            return Center(child: Text('No BreakFats advice found.'));
           }
         }
       },

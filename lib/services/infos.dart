@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InfoServices {
-  final CollectionReference postsCollection = FirebaseFirestore.instance.collection('posts');
+  final CollectionReference InfoCollection = FirebaseFirestore.instance.collection('posts');
 
-  Future<void> addFoodPost(String userName, String category, String content) async {
-    String postId = postsCollection.doc().id; // Generate a unique ID for the new post
-    await postsCollection.doc(postId).set({
+  Future<void> addFoodPost(String userName,String category, String content) async {
+    String postId = InfoCollection.doc().id; // Generate a unique ID for the new post
+    await InfoCollection.doc(postId).set({
       'id': postId,
       'userName': userName,
+      'type':'Information',
       'category': category,
       'content': content,
       'timestamp': Timestamp.now(),
@@ -24,7 +25,7 @@ class InfoServices {
   // }
 
   Future<Map<String, dynamic>?> getProteinPost() async {
-    QuerySnapshot snapshot = await postsCollection.where('category', isEqualTo: 'Protein').get();
+    QuerySnapshot snapshot = await InfoCollection.where('category', isEqualTo: 'Protein').get();
     if (snapshot.docs.isNotEmpty) {
       Map<String, dynamic> post = snapshot.docs.first.data() as Map<String, dynamic>;
       print('Fetched Protein post: $post');
@@ -36,7 +37,7 @@ class InfoServices {
   }
 
   Future<Map<String, dynamic>?> getCarbohydratesPost() async {
-    QuerySnapshot snapshot = await postsCollection.where('category', isEqualTo: 'Carbohydrates').get();
+    QuerySnapshot snapshot = await InfoCollection.where('category', isEqualTo: 'Carbohydrates').get();
     if (snapshot.docs.isNotEmpty) {
       Map<String, dynamic> post = snapshot.docs.first.data() as Map<String, dynamic>;
       print('Fetched Carbohydrates post: $post');
@@ -48,7 +49,7 @@ class InfoServices {
   }
 
   Future<Map<String, dynamic>?> getLipidsPost() async {
-    QuerySnapshot snapshot = await postsCollection.where('category', isEqualTo: 'Lipids').get();
+    QuerySnapshot snapshot = await InfoCollection.where('category', isEqualTo: 'Lipids').get();
     if (snapshot.docs.isNotEmpty) {
       Map<String, dynamic> post = snapshot.docs.first.data() as Map<String, dynamic>;
       print('Fetched Lipids post: $post');
@@ -60,7 +61,7 @@ class InfoServices {
   }
 
   Future<Map<String, dynamic>?> getVitaminsPost() async {
-    QuerySnapshot snapshot = await postsCollection.where('category', isEqualTo: 'Vitamins').get();
+    QuerySnapshot snapshot = await InfoCollection.where('category', isEqualTo: 'Vitamins').get();
     if (snapshot.docs.isNotEmpty) {
       Map<String, dynamic> post = snapshot.docs.first.data() as Map<String, dynamic>;
       print('Fetched Vitamins post: $post');
@@ -72,7 +73,7 @@ class InfoServices {
   }
 
   Future<Map<String, dynamic>?> getRuffagePost() async {
-    QuerySnapshot snapshot = await postsCollection.where('category', isEqualTo: 'Ruffage').get();
+    QuerySnapshot snapshot = await InfoCollection.where('category', isEqualTo: 'Ruffage').get();
     if (snapshot.docs.isNotEmpty) {
       Map<String, dynamic> post = snapshot.docs.first.data() as Map<String, dynamic>;
       print('Fetched Ruffage post: $post');
@@ -84,7 +85,7 @@ class InfoServices {
   }
 
   Future<Map<String, dynamic>?> getWaterPost() async {
-    QuerySnapshot snapshot = await postsCollection.where('category', isEqualTo: 'Water').get();
+    QuerySnapshot snapshot = await InfoCollection.where('category', isEqualTo: 'Water').get();
     if (snapshot.docs.isNotEmpty) {
       Map<String, dynamic> post = snapshot.docs.first.data() as Map<String, dynamic>;
       print('Fetched Water post: $post');
@@ -96,7 +97,7 @@ class InfoServices {
   }
 
   Future<Map<String, dynamic>?> getDiabetesPost() async {
-    QuerySnapshot snapshot = await postsCollection.where('category', isEqualTo: 'Diabetes').get();
+    QuerySnapshot snapshot = await InfoCollection.where('category', isEqualTo: 'Diabetes').get();
     if (snapshot.docs.isNotEmpty) {
       Map<String, dynamic> post = snapshot.docs.first.data() as Map<String, dynamic>;
       print('Fetched Diabetes post: $post');
@@ -108,7 +109,7 @@ class InfoServices {
   }
 
   Future<Map<String, dynamic>?> getCeliacPost() async {
-    QuerySnapshot snapshot = await postsCollection.where('category', isEqualTo: 'Celiac').get();
+    QuerySnapshot snapshot = await InfoCollection.where('category', isEqualTo: 'Celiac').get();
     if (snapshot.docs.isNotEmpty) {
       Map<String, dynamic> post = snapshot.docs.first.data() as Map<String, dynamic>;
       print('Fetched Celiac post: $post');
@@ -120,7 +121,7 @@ class InfoServices {
   }
 
   Future<Map<String, dynamic>?> getIronPost() async {
-    QuerySnapshot snapshot = await postsCollection.where('category', isEqualTo: 'Iron').get();
+    QuerySnapshot snapshot = await InfoCollection.where('category', isEqualTo: 'Iron').get();
     if (snapshot.docs.isNotEmpty) {
       Map<String, dynamic> post = snapshot.docs.first.data() as Map<String, dynamic>;
       print('Fetched Iron post: $post');
@@ -132,7 +133,7 @@ class InfoServices {
   }
 
   Future<Map<String, dynamic>?> getOthersPost() async {
-    QuerySnapshot snapshot = await postsCollection.where('category', isEqualTo: 'Others').get();
+    QuerySnapshot snapshot = await InfoCollection.where('category', isEqualTo: 'Others').get();
     if (snapshot.docs.isNotEmpty) {
       Map<String, dynamic> post = snapshot.docs.first.data() as Map<String, dynamic>;
       print('Fetched Others post: $post');

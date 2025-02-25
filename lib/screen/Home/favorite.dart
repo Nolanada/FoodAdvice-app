@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mobilefoodadviceapp/screen/Home/preferences.dart';
 import 'package:mobilefoodadviceapp/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobilefoodadviceapp/services/auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/favorites.dart';
 
-class preferences extends StatelessWidget {
+class Preferences extends StatelessWidget {
   final AuthService _auth = AuthService();
 
   @override
@@ -15,9 +15,9 @@ class preferences extends StatelessWidget {
     var user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       var uid = user.uid;
-      return StreamProvider<QuerySnapshot<Object?>?>.value(
+      return StreamProvider<QuerySnapshot?>.value(
         value: DatabaseService(uid: uid).preferenceStream,
-        initialData: (null),
+        initialData: null,
         child: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
@@ -34,18 +34,49 @@ class preferences extends StatelessWidget {
               )
             ],
           ),
-          // body: PreferenceList(),
+          body: PreferenceList(userId: uid),
         ),
       );
-    }
-    else {
-      // Handle the case where the user is not logged in
-      // You can navigate to a login screen or show a message to log in
+    } else {
       return Scaffold(
         body: Center(
           child: Text('Please log in to view preferences.'),
         ),
       );
     }
+  }
+}
+
+class PreferenceList extends StatelessWidget {
+  final FavoritesService favoritesService = FavoritesService();
+  final String userId;
+
+  PreferenceList({required this.userId});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<DocumentSnapshot>>(
+      stream: favoritesService.getUserFavoriteItemsStream(userId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error fetching data'));
+        }
+        List<DocumentSnapshot> favoriteItems = snapshot.data ?? [];
+        return ListView.builder(
+          itemCount: favoriteItems.length,
+          itemBuilder: (context, index) {
+            final itemData = favoriteItems[index].data() as Map<String, dynamic>;
+            return ListTile(
+              title: Text(itemData['title'] ?? 'No Title'),
+              subtitle: Text(itemData['content'] ?? 'No Content'),
+              // Add more UI elements here for each favorite item
+            );
+          },
+        );
+      },
+    );
   }
 }
