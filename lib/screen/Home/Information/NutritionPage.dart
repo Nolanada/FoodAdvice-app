@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobilefoodadviceapp/screen/Home/breakfast.dart';
-import 'package:mobilefoodadviceapp/screen/Home/dinner.dart';
-import 'package:mobilefoodadviceapp/screen/Home/lunch.dart';
-import 'package:mobilefoodadviceapp/screen/Home/supper.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/NutritionOption/Celiac.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/NutritionOption/Diabetes.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/NutritionOption/Iron.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/NutritionOption/Others.dart';
 
 class NutritionPage extends StatelessWidget {
   @override
@@ -24,7 +24,7 @@ class NutritionPage extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => BreakfastPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DiabetesPage()));
                 },
                 child: Card(
                   color: Colors.red,
@@ -43,7 +43,7 @@ class NutritionPage extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => LunchPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CeliacPage()));
                 },
                 child: Card(
                   color: Colors.orange,
@@ -62,7 +62,7 @@ class NutritionPage extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SupperPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => IronPage()));
                 },
                 child: Card(
                   color: Colors.yellowAccent,
@@ -81,7 +81,7 @@ class NutritionPage extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DinnerPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => OthersPage()));
                 },
                 child: Card(
                   color: Colors.green,

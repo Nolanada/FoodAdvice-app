@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobilefoodadviceapp/screen/Home/breakfast.dart';
-import 'package:mobilefoodadviceapp/screen/Home/dinner.dart';
-import 'package:mobilefoodadviceapp/screen/Home/lunch.dart';
-import 'package:mobilefoodadviceapp/screen/Home/supper.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/foodClass/Carbohydrates.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/foodClass/Fats_and_oil.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/foodClass/Proteins.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/foodClass/Ruffage.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/foodClass/Vitamins.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/foodClass/Water.dart';
 
 
 class FoodClasses extends StatelessWidget {
@@ -19,7 +21,7 @@ class FoodClasses extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => BreakfastPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProteinsPage()));
                 },
                 child: Card(
                   color: Colors.red,
@@ -38,7 +40,7 @@ class FoodClasses extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => LunchPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CarbohydratesPage()));
                 },
                 child: Card(
                   color: Colors.orange,
@@ -57,7 +59,7 @@ class FoodClasses extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SupperPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => LipidsPage()));
                 },
                 child: Card(
                   color: Colors.yellowAccent,
@@ -76,7 +78,7 @@ class FoodClasses extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DinnerPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => VitaminsPage()));
                 },
                 child: Card(
                   color: Colors.green,
@@ -95,7 +97,7 @@ class FoodClasses extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DinnerPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => RuffagePage()));
                 },
                 child: Card(
                   color: Colors.blue,
@@ -114,7 +116,7 @@ class FoodClasses extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DinnerPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => WaterPage()));
                 },
                 child: Card(
                   color: Colors.indigo,

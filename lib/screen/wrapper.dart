@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobilefoodadviceapp/models/user.dart';
 import 'package:mobilefoodadviceapp/screen/Authenticate/authenticate.dart';
 import 'package:mobilefoodadviceapp/screen/Home/home.dart';
-import 'package:mobilefoodadviceapp/screen/Onboarding_screen.dart';
 import 'package:provider/provider.dart';
 
 
@@ -12,8 +11,6 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final testUser = Provider.of<Users?>(context);
-    print(testUser);
-
     // Return either home or Authenticate widget based on user authentication status
     return testUser != null ? Home() : Authenticate();
   }

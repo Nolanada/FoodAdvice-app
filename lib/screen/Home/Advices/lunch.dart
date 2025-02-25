@@ -16,7 +16,6 @@ class _LunchPageState extends State<LunchPage> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>?>(
       future: AdviceServices().getLunchPost(),
@@ -49,6 +48,9 @@ class _LunchPageState extends State<LunchPage> {
                           icon: Icon(Icons.thumb_up, color: Colors.blue),
                           onPressed: () {
                             updateLikes(advice['id'] ?? '', advice['likes'] ?? 0);
+                            setState(() {
+                              // Update the UI to reflect the new likes count
+                            });
                           },
                         ),
                       ],
@@ -58,7 +60,7 @@ class _LunchPageState extends State<LunchPage> {
               ),
             );
           } else {
-            return Center(child: Text('No breakfast advice found.'));
+            return Center(child: Text('No lunch advice found.'));
           }
         }
       },

@@ -5,7 +5,6 @@ import 'package:mobilefoodadviceapp/services/Advices.dart';
 class BreakfastPage extends StatefulWidget {
   @override
   _BreakfastPageState createState() => _BreakfastPageState();
-  final AdviceServices AdviceService = AdviceServices();
 }
 
 class _BreakfastPageState extends State<BreakfastPage> {
@@ -15,7 +14,6 @@ class _BreakfastPageState extends State<BreakfastPage> {
     await postsCollection.doc(postId).update({'likes': currentLikes + 1});
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>?>(
@@ -49,6 +47,9 @@ class _BreakfastPageState extends State<BreakfastPage> {
                           icon: Icon(Icons.thumb_up, color: Colors.blue),
                           onPressed: () {
                             updateLikes(advice['id'] ?? '', advice['likes'] ?? 0);
+                            setState(() {
+                              // Update the UI to reflect the new likes count
+                            });
                           },
                         ),
                       ],

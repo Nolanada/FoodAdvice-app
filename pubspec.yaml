@@ -71,10 +71,12 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     #Home Images
-     - assets/apples.png
-     - assets/lime.png
-     - assets/rice.png
-     - assets/hungry-man-dream-about-food-260nw-2130041669.jpg
+     - assets/images/hero2.jpg
+     - assets/images/advice.jpg
+     - assets/images/advice3.jpg
+     - assets/images/preference.jpg
+     - assets/images/preference1.jpg
+     - assets/images/info.jpg
      - assets/images/background.png
      #Onboarding_screen Images
      - assets/images/clock.png
@@ -84,6 +86,7 @@ flutter:
      - assets/images/slide1.jpg
      - assets/images/slide2.jpg
      - assets/images/slide3.jpg
+     - assets/onboarding.jpg
      #MealOptions images
      - assets/images/breakfast.jpg
      - assets/images/brunch.jpg
@@ -91,13 +94,11 @@ flutter:
      - assets/images/supper.jpg
      - assets/images/dinner.jpg
      - assets/images/food_background.jpg
-#     - assets/svg/login_wqkt.svg
-#     - assets/svg/mobile-login_4ntr.svg
-#     - assets/svg/hello_ccwj.svg
-#     - assets/svg/finance_m6vw.svg
-     - assets/onboarding.jpg
      - assets/people-with-food.jpg
      - assets/realistic-security.jpg
+    #Profile Page
+     - assets/images/profile1.jpg
+     - assets/images/profile2.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobilefoodadviceapp/models/user.dart';
+import 'package:mobilefoodadviceapp/services/database.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -67,7 +68,15 @@ Future registerWithEmail(String email, String password) async {
       password: password,
     );
     User? user = result.user;
-    return _userFromFirebaseUser(user);
+
+    if (user != null) {
+      // Create a new document for the user
+      await DatabaseService(uid: user.uid).updateUserData('uname', 'date', 'category', 'content');
+      return _userFromFirebaseUser(user);
+    } else {
+      print('User is null');
+      return null;
+    }
   } catch (e) {
     print(e.toString());
     return null;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobilefoodadviceapp/screen/Home/NutritionPage.dart';
-import 'package:mobilefoodadviceapp/screen/foodClass.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/NutritionPage.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Information/foodClass.dart';
 
 class InfoOptions extends StatelessWidget {
   @override

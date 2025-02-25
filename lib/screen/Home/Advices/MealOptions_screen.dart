@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobilefoodadviceapp/screen/Home/dinner.dart';
-import 'package:mobilefoodadviceapp/screen/Home/lunch.dart';
-import 'package:mobilefoodadviceapp/screen/Home/supper.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Advices/dinner.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Advices/lunch.dart';
+import 'package:mobilefoodadviceapp/screen/Home/Advices/supper.dart';
 
 import 'breakfast.dart';
 
