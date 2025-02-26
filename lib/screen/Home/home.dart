@@ -137,7 +137,7 @@ class Home extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Preferences(), // Pass the user ID here
+                              builder: (context) => FavoriteItemsWidget(uid!), // Pass the user ID to FavoriteItemsWidget // Pass the user ID here
                             ),
                           );
                         },

@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobilefoodadviceapp/services/infos.dart';
+
+import '../../../../services/favorites.dart';
 
 class CarbohydratesPage extends StatefulWidget {
   @override
@@ -10,9 +13,27 @@ class CarbohydratesPage extends StatefulWidget {
 
 class _CarbohydratesPageState extends State<CarbohydratesPage> {
   final CollectionReference postsCollection = FirebaseFirestore.instance.collection('posts');
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FavoritesService _favoritesService = FavoritesService();
 
   Future<void> updateLikes(String postId, int currentLikes) async {
     await postsCollection.doc(postId).update({'likes': currentLikes + 1});
+  }
+
+  Set<String> favoritePosts = Set<String>();
+
+  void toggleFavorite(String postId) {
+    String userId = _auth.currentUser!.uid;
+    String favoriteKey = '$postId-$userId';
+
+    if (favoritePosts.contains(favoriteKey)) {
+      favoritePosts.remove(favoriteKey);
+    } else {
+      favoritePosts.add(favoriteKey);
+      _favoritesService.addFavoritePost(userId, postId); // Add post to favorites in Firestore
+    }
+
+    setState(() {});
   }
 
   @override
@@ -31,7 +52,11 @@ class _CarbohydratesPageState extends State<CarbohydratesPage> {
             return ListView.builder(
               itemCount: posts.length,
               itemBuilder: (context, index) {
-                Map<String, dynamic> post = posts[index].data() as Map<String, dynamic>; // Explicitly cast to Map<String, dynamic>
+                Map<String, dynamic> post = posts[index].data() as Map<String, dynamic>;
+                String postId = post['id'];
+                String userId = _auth.currentUser!.uid;
+                String favoriteKey = '$postId-$userId';
+                bool isFavorite = favoritePosts.contains(favoriteKey);// Explicitly cast to Map<String, dynamic>
                 return Card(
                   margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   child: ListTile(
@@ -48,6 +73,14 @@ class _CarbohydratesPageState extends State<CarbohydratesPage> {
                             Text('Likes: ${post['likes'] ?? 0}',
                                 style: TextStyle(color: Colors.grey)),
                             Spacer(),
+
+                            IconButton(
+                              icon: Icon(Icons.favorite, color: isFavorite ? Colors.red : Colors.grey),
+                              onPressed: () {
+                                toggleFavorite(postId);
+                              },
+                            ),
+
                             IconButton(
                               icon: Icon(Icons.thumb_up, color: Colors.blue),
                               onPressed: () {
