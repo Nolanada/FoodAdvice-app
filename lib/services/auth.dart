@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobilefoodadviceapp/models/user.dart';
 import 'package:mobilefoodadviceapp/services/database.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
 
   Users _userFromFirebaseUser(User? user) {
     return user != null ? Users(uid: user.uid) : Users(uid: '');
@@ -61,25 +63,47 @@ Future signInWithEmailPassword(String email, String password) async {
 }
 //
 // Register with email and password
-Future registerWithEmail(String email, String password) async {
-  try {
-    UserCredential result = await _auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    User? user = result.user;
+// Future registerWithEmail(String email, String password) async {
+//   try {
+//     UserCredential result = await _auth.createUserWithEmailAndPassword(
+//       email: email,
+//       password: password,
+//     );
+//     User? user = result.user;
+//
+//     if (user != null) {
+//       // Create a new document for the user
+//       await DatabaseService(uid: user.uid).updateUserData('uname', 'date', 'category', 'content');
+//       return _userFromFirebaseUser(user);
+//     } else {
+//       print('User is null');
+//       return null;
+//     }
+//   } catch (e) {
+//     print(e.toString());
+//     return null;
+//   }
+// }
 
-    if (user != null) {
-      // Create a new document for the user
-      await DatabaseService(uid: user.uid).updateUserData('uname', 'date', 'category', 'content');
-      return _userFromFirebaseUser(user);
-    } else {
-      print('User is null');
+  Future registerWithEmail(String email, String password, String uname, String tel, String address) async {
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Create a user document in Firestore
+      await usersCollection.doc(userCredential.user!.uid).set({
+        'email': email,
+        'username': uname,
+        'phone': tel,
+        'address': address,
+      });
+
+      return userCredential.user;
+    } catch (e) {
+      print(e.toString());
       return null;
     }
-  } catch (e) {
-    print(e.toString());
-    return null;
   }
-}
 }

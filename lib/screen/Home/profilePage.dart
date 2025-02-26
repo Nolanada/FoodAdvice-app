@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class EditProfile extends StatefulWidget {
@@ -9,6 +11,22 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   bool isObscurePassword = true;
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+
+  void saveChanges() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+        'fullName': fullNameController.text,
+        'email': emailController.text,
+        'address': addressController.text,
+      });
+      Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +38,14 @@ class _EditProfileState extends State<EditProfile> {
             Icons.arrow_back,
             color: Colors.indigo,
           ),
-          onPressed: (){},
+          onPressed: (){
+            Navigator.pop(context);
+          },
         ),
         actions: [
           IconButton(
               onPressed: (){
-
+                Navigator.pop(context);
               },
               icon: Icon(Icons.settings,
               color: Colors.indigo,
@@ -86,17 +106,18 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
               SizedBox(height: 30,),
-              buildTextField("Full Name", "Demon", false),
-              buildTextField("Email", "demon@gmail.com", false),
-              buildTextField("Password", "******", true),
-              buildTextField("Address", "Awae", false),
+              buildTextField("Full Name", "Demon", fullNameController, false),
+              buildTextField("Email", "demon@gmail.com", emailController, false),
+              buildTextField("Password", "******", passwordController, true),
+              buildTextField("Address", "Awae", addressController, false),
+
               SizedBox(height: 30,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   OutlinedButton(
                       onPressed: (){
-
+                        Navigator.pop(context);
                       },
                       child: Text('CANCEL', style: TextStyle(
                         fontSize: 15,
@@ -109,12 +130,12 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   ),
                   ElevatedButton(
-                      onPressed: () {},
-                      child: Text("SAVE", style: TextStyle(
-                          fontSize: 15,
-                          letterSpacing: 2,
-                          color: Colors.white
-                      )),
+                    onPressed: saveChanges,
+                    child: Text("SAVE", style: TextStyle(
+                      fontSize: 15,
+                      letterSpacing: 2,
+                      color: Colors.white,
+                    )),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       padding: EdgeInsets.symmetric(horizontal: 50),
@@ -130,24 +151,25 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  Widget buildTextField(String labelText, String placeholder, bool isPasswordTextField){
+  Widget buildTextField(String labelText, String placeholder, TextEditingController controller, bool isPasswordTextField) {
     return Padding(
-        padding: EdgeInsets.only(bottom: 30),
+      padding: EdgeInsets.only(bottom: 30),
       child: TextField(
+        controller: controller,
         obscureText: isPasswordTextField ? isObscurePassword : false,
         decoration: InputDecoration(
           suffixIcon: isPasswordTextField ?
-              IconButton(
-                  onPressed: (){
-                    setState(() {
-                      isObscurePassword = !isObscurePassword;
-                    });
-                  },
-                  icon: Icon(
-                    Icons.remove_red_eye,
-                    color: Colors.grey,
-                  ),
-              ) : null,
+          IconButton(
+            onPressed: () {
+              setState(() {
+                isObscurePassword = !isObscurePassword;
+              });
+            },
+            icon: Icon(
+              Icons.remove_red_eye,
+              color: Colors.grey,
+            ),
+          ) : null,
           contentPadding: EdgeInsets.only(bottom: 5),
           labelText: labelText,
           floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -155,11 +177,11 @@ class _EditProfileState extends State<EditProfile> {
           hintStyle: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.grey
-          )
-
+            color: Colors.grey,
+          ),
         ),
       ),
     );
   }
 }
+

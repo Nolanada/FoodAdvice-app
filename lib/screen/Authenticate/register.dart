@@ -231,17 +231,15 @@ class _SignUpState extends State<SignUp> {
                             backgroundColor: Colors.indigoAccent,
                           ),
                           onPressed: () async {
-                            if (_formKey.currentState!.validate())  {
+                            if (_formKey.currentState!.validate()) {
                               setState(() => loading = true);
-                              dynamic result = await _auth.registerWithEmail(email, password);
-                              if (result == null){
+                              dynamic result = await _auth.registerWithEmail(email, password, uname, tel, address);
+                              if (result == null) {
                                 setState(() {
                                   error = 'Registration failed, please provide valid info';
                                   loading = false;
-                                }
-                                );
+                                });
                               }
-                              // register();
                             }
                           },
                           child: Text(
